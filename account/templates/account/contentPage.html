@@ -1,0 +1,63 @@
+{% extends 'account/main.html' %}
+{% load crispy_forms_tags %}
+{%block title%}
+Input Data
+{%endblock title%}
+{% block content %}
+<br>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+				{{contentFilter.form|crispy}}
+		    <button class="btn btn-primary" type="submit">Search</button>
+		  </form>
+		</div>
+	</div>
+
+</div>
+<br>
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h1 class="pl-2">Total Input Data: {{total_content}}</h1>
+        </div>
+        <div class="card card-body">
+            <table class="table">
+                <tr>
+                    <th>Title</th>
+                    <th>Website</th>
+                    <th>Category</th>
+                    <th>Month Name</th>
+                    <th>Monthly Active User</th>
+                    <th>Global rank</th>
+                    <th>Country Traffic</th>
+                    <th>Popular Language</th>
+                    <th>Social</th>
+                    <th>Update</th>
+                    {% if user.is_authenticated and request.user.is_superuser %}
+                    <th>Remove</th>
+                    {%endif%}
+                </tr>
+				{% for content in contents %}
+					<tr>
+						<td>{{ content.title }}</td>
+						<td>{{ content.title.website }}</td>
+						<td>{{ content.title.category }}</td>
+						<td>{{ content.month_name }}</td>
+						<td>{{ content.monthly_active_user }}</td>
+						<td>{{ content.global_rank }}</td>
+						<td>{{ content.country_traffic }}</td>
+                        <td>{{ content.title.language }}</td>
+						<td>{{ content.social_media_traffic }}%</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'update_content' content.id %}">Update</a></td>
+						{% if user.is_authenticated and request.user.is_superuser %}
+						<td><a class="btn btn-sm btn-danger" href="{% url 'delete_content' content.id %}">Remove</a></td>
+						{%endif%}
+					</tr>
+				{% endfor %}
+            </table>
+        </div>
+    </div>
+
+</div>{% endblock content %}

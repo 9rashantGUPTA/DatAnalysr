@@ -1,0 +1,94 @@
+{% extends 'account/main.html' %}
+{% load crispy_forms_tags %}
+{%block title%}
+Content
+{%endblock title%}
+{% block content %}
+	<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Input Data</h5>
+			<hr>
+			<a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'Brand-Detail' brand.slug %}">Chart</a>
+			<a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'create_content' brand.slug%}">Add Input Data</a>
+			<a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'update_brand' brand.slug %}">Update Brand</a>
+			{% if user.is_authenticated and request.user.is_superuser %}
+			<a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'delete_brand' brand.slug %}">Delete Brand</a>
+			{%endif%}
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Brand Information</h5>
+			<hr>
+			<p><b>Name:</b> {{brand.title}}</p>
+			<p><b>Website:</b> {{brand.website}}</p>
+			<p><b>Category:</b> {{brand.category}}</p>
+			<p><b>Language:</b> {{brand.language}}</p>
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Total Input Data</h5>
+			<hr>
+			<h1 style="text-align: center;padding: 10px">{{content_count}}</h1>
+		</div>
+	</div>
+</div>
+
+
+<br>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+				{{myFilter.form|crispy}}
+		    <button class="btn btn-primary" type="submit">Search</button>
+		  </form>
+		</div>
+	</div>
+
+</div>
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th>Month Name</th>
+					<th>Monthly Active User</th>
+					<th>Global Rank</th>
+					<th>Country Traffic</th>
+					<th>Social Media Traffic</th>
+					<th>Created Date</th>
+					<th>Update</th>
+					{% if user.is_authenticated and request.user.is_superuser %}
+					<th>Remove</th>
+					{%endif%}
+				</tr>
+
+				{% for content in contents %}
+					<tr>
+						<td>{{content.month_name}}</td>
+						<td>{{content.monthly_active_user}}</td>
+						<td>{{content.global_rank}}</td>
+						<td>{{content.country_traffic}}</td>
+						<td>{{content.social_media_traffic}}%</td>
+						<td>{{content.updated |date:"F d, Y"}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'update_content' content.id %}">Update</a></td>
+						{% if user.is_authenticated and request.user.is_superuser %}
+						<td><a class="btn btn-sm btn-danger" href="{% url 'delete_content' content.id %}">Remove</a></td>
+						{%endif%}
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

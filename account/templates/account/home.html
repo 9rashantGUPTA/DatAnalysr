@@ -1,0 +1,68 @@
+{% extends 'account/main.html' %}
+{% load crispy_forms_tags %}
+{%block title%}
+Home
+{%endblock title%}
+{% block content %}
+{%  include 'account/status.html' %}
+<br>
+
+
+<div class="row">
+	<div class="col-md-5">
+		<h3 class="pl-4">Brand</h3>
+		<hr>
+		<div class="card card-body">
+<!--			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'create_brand'%}">Create Brand</a>-->
+			<table class="table table-sm">
+				<tr>
+					<th></th>
+					<th>Brand</th>
+					<th>Website</th>
+					<th>Chart</th>
+				</tr>
+				{% for brand in brands %}
+					<tr>
+						<td><a class="btn btn-sm btn-info" href="{% url 'single_brand' brand.slug %}">View</a></td>
+						<td>{{brand.title}}</td>
+						<td>{{brand.website}}</td>
+						<td><a class="btn btn-sm btn-warning" href="{% url 'Brand-Detail' brand.slug %}">View</a></td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+
+	<div class="col-md-7">
+		<h3 class="pl-4">Recently Updated Brands</h3>
+		<hr>
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th>Brand</th>
+					<th>Active user</th>
+					<th>Month</th>
+					<th>Created Date</th>
+					<th>Update</th>
+					{% if user.is_authenticated and request.user.is_superuser %}
+					<th>Remove</th>
+					{%endif%}
+				</tr>
+				{% for content in contents %}
+					<tr>
+						<td>{{ content.title }}</td>
+						<td>{{ content.monthly_active_user }}</td>
+						<td>{{ content.month_name }}</td>
+						<td>{{ content.updated | date:"F d, Y"}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'update_content' content.id %}">Update</a></td>
+						{% if user.is_authenticated and request.user.is_superuser %}
+						<td><a class="btn btn-sm btn-danger" href="{% url 'delete_content' content.id %}">Remove</a></td>
+						{%endif%}
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+
+</div>
+{% endblock content %}

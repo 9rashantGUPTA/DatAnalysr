@@ -1,0 +1,30 @@
+{% load static %}
+<style>
+  .hello-msg
+    {
+    font-size: 15px;
+    color: #fff;
+    margin-right: 20px;
+    }
+
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'home' %}"><h1>Analyzer</h1></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <div class="navbar-nav mr-auto">
+        <a class="nav-link" href="{% url 'create_brand' %}"><b>+</b> Create Brand</a>
+            <a class="nav-link" href="{% url 'brand' %}">See Directory</a>
+            <a class="nav-link" href="{% url 'content' %}">See Input Data</a>
+    </div>
+      <div class="navbar-nav">
+          <span class="hello-msg">Hello, {{request.user}}</span>
+          {% if user.is_authenticated and request.user.is_superuser %}
+          <span><a class="hello-msg" href="{% url 'register' %}">Register new User</a></span>
+          {%endif%}
+          <span><a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
+      </div>
+  </div>
+</nav>

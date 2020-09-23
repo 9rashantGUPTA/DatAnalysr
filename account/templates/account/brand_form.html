@@ -1,0 +1,29 @@
+{% extends 'account/main.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{%block title%}
+Create Brand
+{%endblock title%}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5">
+            <img src="{% static 'images/create.png' %}" class="img-fluid">
+        </div>
+        <div class="col-lg-7">
+            <h1 class="ml-3"><b>Create/Update Brand</b></h1>
+            <div class="card card-body">
+                <form action="" method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <hr>
+                    <button class="ui large black button" type="submit">Done</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

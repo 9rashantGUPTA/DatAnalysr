@@ -1,0 +1,62 @@
+{% extends 'account/main.html' %}
+{% load crispy_forms_tags %}
+{%block title%}
+Brand
+{%endblock title%}
+{% block content %}
+
+<br>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+				{{filter.form|crispy}}
+		    <button class="btn btn-primary" type="submit">Search</button>
+		  </form>
+		</div>
+	</div>
+
+</div>
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h1 class="pl-2">Total Brands: {{total_brand}}</h1>
+        </div>
+        <div class="card card-body">
+            <table class="table">
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Website</th>
+                    <th>Language</th>
+                    <th>Created</th>
+                    <th>Database</th>
+                    <th>Chart</th>
+                    <th>Update</th>
+                    {% if user.is_authenticated and request.user.is_superuser %}
+                    <th>Delete</th>
+                    {%endif%}
+                </tr>
+
+                {% for brand in brand %}
+                <tr>
+                    <td>{{brand.title}}</td>
+                    <td>{{brand.category}}</td>
+                    <td>{{brand.website}}</td>
+                    <td>{{brand.language}}</td>
+                    <td>{{brand.created}}</td>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'single_brand' brand.slug %}">View</a></td>
+                    <td><a class="btn btn-sm btn-warning" href="{% url 'Brand-Detail' brand.slug %}">View</a></td>
+                    <td><a class="btn btn-sm btn-success" href="{% url 'update_brand' brand.slug %}">Update</a></td>
+                    {% if user.is_authenticated and request.user.is_superuser %}
+                    <td><a class="btn btn-sm btn-danger" href="{% url 'delete_brand' brand.slug %}">Delete</a></td>
+                    {%endif%}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+</div>{% endblock content %}
